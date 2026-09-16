@@ -7,6 +7,110 @@ Verified on account `SFPSCOGS-RRAMAN_AWS_SI`, Snowflake **10.32.102**, 14 Sep 20
 
 ---
 
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        CREATE-TIME CONFIGURATION                    │
+│                                                                     │
+│  DEMO_MASTER_AGENT                     DEMO_DATA_SUBAGENT           │
+│  ┌─────────────────────┐               ┌─────────────────────┐      │
+│  │ tools:              │               │ tools:              │      │
+│  │  • agent_toolset ───┼──references──▶│  • query_sales      │      │
+│  │  • data_to_chart    │               │  • query_inventory  │      │
+│  └─────────────────────┘               └─────────────────────┘      │
+│                                          │              │           │
+│                                          ▼              ▼           │
+│                                       SALES_SV     INVENTORY_SV    │
+└─────────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                     RUNTIME (tool flattening)                       │
+│                                                                     │
+│  Snowflake resolves the agent_toolset reference and unions the      │
+│  subagent's tools into the master's effective tool set.             │
+│  The subagent NEVER runs. Its instructions are ignored.             │
+│                                                                     │
+│  DEMO_MASTER_AGENT (effective tool set)                             │
+│  ┌──────────────────────────────────────────┐                       │
+│  │  • query_sales      ◀── from subagent    │                       │
+│  │  • query_inventory  ◀── from subagent    │                       │
+│  │  • data_to_chart    ◀── own tool         │                       │
+│  └──────────────────────────────────────────┘                       │
+└─────────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│          EXECUTION FLOW (single agent turn, no delegation)          │
+│                                                                     │
+│  User: "Show me sales by product for the top 5 products."          │
+│                                                                     │
+│  ┌──────────────────┐                                               │
+│  │   Orchestrator    │                                               │
+│  │  (master agent)   │                                               │
+│  └────────┬─────────┘                                               │
+│           │                                                         │
+│           │ ① Selects query_sales (ignores query_inventory)         │
+│           ▼                                                         │
+│  ┌──────────────────┐        ┌───────────┐                          │
+│  │  query_sales      │──SQL──▶│  SALES_SV │                          │
+│  │  (cortex_analyst) │◀──────│           │                          │
+│  └────────┬─────────┘  rows  └───────────┘                          │
+│           │                                                         │
+│           │ ② Gets 5-row result set (structured, with query_id)     │
+│           ▼                                                         │
+│  ┌──────────────────┐                                               │
+│  │ system_execute_sql│  Executes the generated SQL                   │
+│  └────────┬─────────┘                                               │
+│           │                                                         │
+│           │ ③ Result set available in the master's own turn          │
+│           ▼                                                         │
+│  ┌──────────────────┐                                               │
+│  │  data_to_chart    │  Sees structured result set directly          │
+│  └────────┬─────────┘                                               │
+│           │                                                         │
+│           │ ④ Emits response.chart with Vega-Lite v5 spec           │
+│           ▼                                                         │
+│  ┌──────────────────────────────────────────┐                       │
+│  │  SSE Stream to Client                     │                       │
+│  │                                           │                       │
+│  │  event: response.table    (5 rows)        │                       │
+│  │  event: response.chart    (bar chart)     │◀── interactive chart  │
+│  │  event: response.text     (summary)       │                       │
+│  └──────────────────────────────────────────┘                       │
+└─────────────────────────────────────────────────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────┐
+│     WHY THIS WORKS vs. WHY CUSTOM A2A BREAKS                       │
+│                                                                     │
+│  agent_toolset (this approach)        Custom A2A (DATA_AGENT_RUN)   │
+│  ┌────────────────────┐               ┌────────────────────┐        │
+│  │ Master              │               │ Master              │        │
+│  │  │                  │               │  │                  │        │
+│  │  ▼                  │               │  ▼                  │        │
+│  │ query_sales ────┐   │               │ generic tool ──┐   │        │
+│  │                 │   │               │                │   │        │
+│  │  structured     │   │               │  calls         │   │        │
+│  │  result set     │   │               │  DATA_AGENT_   │   │        │
+│  │                 │   │               │  RUN(subagent) │   │        │
+│  │  ▼              │   │               │                │   │        │
+│  │ data_to_chart   │   │               │  ▼             │   │        │
+│  │  ▼              │   │               │ returns TEXT   │   │        │
+│  │ ✅ chart_spec   │   │               │  blob only     │   │        │
+│  └────────────────┘   │               │                │   │        │
+│                        │               │  ▼             │   │        │
+│                        │               │ data_to_chart  │   │        │
+│                        │               │  ▼             │   │        │
+│                        │               │ ❌ no structured│   │        │
+│                        │               │    result set  │   │        │
+│                        │               └────────────────┘   │        │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Test setup
 
 Two semantic views (Sales + Inventory), a subagent that owns both views (no
