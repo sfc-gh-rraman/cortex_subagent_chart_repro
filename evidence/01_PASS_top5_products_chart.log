@@ -1,0 +1,116 @@
+POST https://sfpscogs-rraman_aws_si.snowflakecomputing.com/api/v2/databases/SNOWFLAKE_INTELLIGENCE/schemas/AGENTS/agents/DEMO_MASTER_AGENT:run
+Q: Show me sales by product for the top 5 products.
+==============================================================================
+[raw stream written to trace_toolset.txt]
+
+---- EVENT TYPE COUNTS ----
+    30  response.text.delta
+    23  response.status
+    10  response.tool_result.status
+     4  response.tool_use
+     4  response.tool_result
+     4  response.thinking.delta
+     3  response.text
+     1  response.thinking
+     1  response.table
+     1  response.chart
+     1  response.suggested_queries
+     1  response
+     1  done
+
+---- TOOL USE EVENTS ----
+  name='query_sales' type='system_agentic_semantic_context'
+  name='system_execute_sql' type='system_execute_sql'
+  name='server_skill' type='server_skill'
+  name='data_to_chart' type='data_to_chart'
+
+---- CHART SPECS EMITTED ----
+  event=response.chart tool_use_id=toolu_bdrk_01HTbkA6U4JCh3oM4fZ2P8ea
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "bar": {
+      "minBandSize": 5
+    }
+  },
+  "data": {
+    "values": [
+      {
+        "PRODUCT_NAME": "Delta Gadget",
+        "TOTAL_REVENUE": 1576577.75
+      },
+      {
+        "PRODUCT_NAME": "Gamma Gadget",
+        "TOTAL_REVENUE": 1160720
+      },
+      {
+        "PRODUCT_NAME": "Epsilon Gadget",
+        "TOTAL_REVENUE": 936206.37
+      },
+      {
+        "PRODUCT_NAME": "Theta Widget",
+        "TOTAL_REVENUE": 437593
+      },
+      {
+        "PRODUCT_NAME": "Beta Widget",
+        "TOTAL_REVENUE": 327112.5
+      }
+    ]
+  },
+  "encoding": {
+    "tooltip": [
+      {
+        "field": "TOTAL_REVENUE",
+        "format": ",.6~f",
+        "title": "Total Revenue (USD)",
+        "type": "quantitative"
+      },
+      {
+        "field": "PRODUCT_NAME",
+        "title": "Product",
+        "type": "nominal"
+      }
+    ],
+    "x": {
+      "axis": {
+        "format": ".3~s",
+        "labelExpr": "replace(datum.label, 'G', 'B')"
+      },
+      "field": "TOTAL_REVENUE",
+      "sort": null,
+      "title": "Total Revenue (USD)",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "PRODUCT_NAME",
+      "sort": "-x",
+      "title": "Product",
+      "type": "nominal"
+    }
+  },
+  "mark": "bar",
+  "title": "Top 5 Products by Total Revenue (USD)",
+  "usermeta": {
+    "snowflake": {
+      "color_mapping": {
+        "bar": {
+          "hex": "#4c78a8",
+          "name": "blue"
+        }
+      },
+      "columnRoles": {
+        "PRODUCT_NAME": "dimension",
+        "TOTAL_REVENUE": "metric"
+      }
+    }
+  }
+}
+
+---- FINAL ANSWER TEXT ----
+I'll get the top 5 products by sales for you.Here are the top 5 products by total revenue (USD):
+
+
+
+Delta Gadget leads by a wide margin at about $1.58M â roughly 36% more than the next product, Gamma Gadget ($1.16M). Gadgets dominate the top three spots, while Widgets (Theta and Beta) round out the list at a notably lower revenue tier.
+
+

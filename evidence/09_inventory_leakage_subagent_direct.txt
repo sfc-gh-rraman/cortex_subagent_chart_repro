@@ -1,0 +1,25 @@
+=== In MASTER trace (sales-only question) ===
+
+Sales markers:
+  SALES_SV: 6 occurrences
+  NET_REVENUE: 4 occurrences
+  ORDER_ID: 8 occurrences
+  query_sales: 9 occurrences
+  TOTAL_REVENUE: 48 occurrences
+
+Inventory markers:
+  INVENTORY_SV: 0 occurrences
+  UNITS_ON_HAND: 0 occurrences
+  UNITS_ON_ORDER: 0 occurrences
+  REORDER_POINT: 0 occurrences
+  WAREHOUSE_CODE: 0 occurrences
+  DC-CHICAGO: 0 occurrences
+  DC-DALLAS: 0 occurrences
+  query_inventory: 0 occurrences
+  STOCK_VALUE: 0 occurrences
+
+=== Tool use events ===
+
+Total chars in lines mentioning inventory concepts: 0
+Total stream chars: 110,897
+Inventory share: 0.0%

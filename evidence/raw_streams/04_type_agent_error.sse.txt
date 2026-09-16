@@ -1,0 +1,5 @@
+event: error
+data: {"message":"Tool type agent is not valid. (request_id: 1c50c99c-481f-4ce2-9de4-e073d061a96b)","code":"399504","error_code":null,"request_id":"1c50c99c-481f-4ce2-9de4-e073d061a96b"}
+
+event: done
+data: [DONE]

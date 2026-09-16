@@ -1,0 +1,18 @@
+Drop the 5 screenshots in this folder, then paste them into EMAIL_TO_VISHWA.md
+at the matching [SCREENSHOT n] markers.
+
+Suggested filenames:
+
+  01_top5_products_bar_chart.png      <- the money shot (tooltip visible)
+  02_monthly_trend_line_chart.png
+  03_inventory_two_charts.png         (optional)
+  04_tool_trace_data_to_chart.png     (the diagnosis)
+  05_master_agent_tools_config.png    (optional)
+
+Full capture instructions, including what to include in frame and why each one
+matters, are in the "SCREENSHOTS TO CAPTURE" section at the bottom of
+EMAIL_TO_VISHWA.md.
+
+All captures come from:
+  Snowsight -> AI & ML -> Snowflake Intelligence
+    -> "Demo Master Agent (charts via subagent)"

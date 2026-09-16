@@ -1,0 +1,6 @@
+BYTES: 55357
+chart_spec       count=1
+chart            count=105
+vega             count=6
+data_to_chart    count=16
+response.chart   count=0

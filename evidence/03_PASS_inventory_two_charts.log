@@ -1,0 +1,216 @@
+POST https://sfpscogs-rraman_aws_si.snowflakecomputing.com/api/v2/databases/SNOWFLAKE_INTELLIGENCE/schemas/AGENTS/agents/DEMO_MASTER_AGENT:run
+Q: Show me total stock value by warehouse, and separately units on hand for all 8 products.
+==============================================================================
+[raw stream written to trace_inv.txt]
+
+---- EVENT TYPE COUNTS ----
+    65  response.text.delta
+    23  response.status
+    16  response.tool_result.status
+     6  response.tool_use
+     6  response.tool_result
+     4  response.text
+     2  response.table
+     2  response.chart
+     1  response.suggested_queries
+     1  response
+     1  done
+
+---- TOOL USE EVENTS ----
+  name='query_inventory' type='system_agentic_semantic_context'
+  name='system_execute_sql' type='system_execute_sql'
+  name='system_execute_sql' type='system_execute_sql'
+  name='server_skill' type='server_skill'
+  name='data_to_chart' type='data_to_chart'
+  name='data_to_chart' type='data_to_chart'
+
+---- CHART SPECS EMITTED ----
+  event=response.chart tool_use_id=toolu_bdrk_014Z7RrMdNZ73zQ1LtdSRTM6
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "bar": {
+      "minBandSize": 5
+    }
+  },
+  "data": {
+    "values": [
+      {
+        "TOTAL_STOCK_VALUE": 261272.53,
+        "WAREHOUSE_CODE": "DC-RENO"
+      },
+      {
+        "TOTAL_STOCK_VALUE": 212145.01,
+        "WAREHOUSE_CODE": "DC-NEWARK"
+      },
+      {
+        "TOTAL_STOCK_VALUE": 205834.91,
+        "WAREHOUSE_CODE": "DC-DALLAS"
+      },
+      {
+        "TOTAL_STOCK_VALUE": 205769.43,
+        "WAREHOUSE_CODE": "DC-CHICAGO"
+      }
+    ]
+  },
+  "encoding": {
+    "tooltip": [
+      {
+        "field": "TOTAL_STOCK_VALUE",
+        "format": ",.6~f",
+        "title": "Total_stock_value",
+        "type": "quantitative"
+      },
+      {
+        "field": "WAREHOUSE_CODE",
+        "title": "Warehouse_code",
+        "type": "nominal"
+      }
+    ],
+    "x": {
+      "axis": {
+        "format": ".3~s",
+        "labelExpr": "replace(datum.label, 'G', 'B')",
+        "title": "Total Stock Value (USD)"
+      },
+      "field": "TOTAL_STOCK_VALUE",
+      "sort": null,
+      "type": "quantitative"
+    },
+    "y": {
+      "axis": {
+        "title": "Warehouse"
+      },
+      "field": "WAREHOUSE_CODE",
+      "sort": "-x",
+      "type": "nominal"
+    }
+  },
+  "mark": "bar",
+  "title": "Total Stock Value by Warehouse (USD)",
+  "usermeta": {
+    "snowflake": {
+      "color_mapping": {
+        "bar": {
+          "hex": "#4c78a8",
+          "name": "blue"
+        }
+      },
+      "columnRoles": {
+        "TOTAL_STOCK_VALUE": "metric",
+        "WAREHOUSE_CODE": "dimension"
+      }
+    }
+  }
+}
+  event=response.chart tool_use_id=toolu_bdrk_015PD8z6xkoRgpectz8FBwqz
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": {
+    "bar": {
+      "minBandSize": 5
+    }
+  },
+  "data": {
+    "values": [
+      {
+        "PRODUCT_NAME": "Epsilon Gadget",
+        "TOTAL_UNITS_ON_HAND": 2827
+      },
+      {
+        "PRODUCT_NAME": "Theta Widget",
+        "TOTAL_UNITS_ON_HAND": 2554
+      },
+      {
+        "PRODUCT_NAME": "Delta Gadget",
+        "TOTAL_UNITS_ON_HAND": 1688
+      },
+      {
+        "PRODUCT_NAME": "Beta Widget",
+        "TOTAL_UNITS_ON_HAND": 1494
+      },
+      {
+        "PRODUCT_NAME": "Alpha Widget",
+        "TOTAL_UNITS_ON_HAND": 1460
+      },
+      {
+        "PRODUCT_NAME": "Zeta Accessory",
+        "TOTAL_UNITS_ON_HAND": 1347
+      },
+      {
+        "PRODUCT_NAME": "Eta Accessory",
+        "TOTAL_UNITS_ON_HAND": 1316
+      },
+      {
+        "PRODUCT_NAME": "Gamma Gadget",
+        "TOTAL_UNITS_ON_HAND": 1144
+      }
+    ]
+  },
+  "encoding": {
+    "tooltip": [
+      {
+        "field": "TOTAL_UNITS_ON_HAND",
+        "format": ",.6~f",
+        "title": "Total_units_on_hand",
+        "type": "quantitative"
+      },
+      {
+        "field": "PRODUCT_NAME",
+        "title": "Product_name",
+        "type": "nominal"
+      }
+    ],
+    "x": {
+      "axis": {
+        "title": "Units on Hand"
+      },
+      "field": "TOTAL_UNITS_ON_HAND",
+      "sort": null,
+      "type": "quantitative"
+    },
+    "y": {
+      "axis": {
+        "title": "Product"
+      },
+      "field": "PRODUCT_NAME",
+      "sort": "-x",
+      "type": "nominal"
+    }
+  },
+  "mark": "bar",
+  "title": "Units on Hand by Product",
+  "usermeta": {
+    "snowflake": {
+      "color_mapping": {
+        "bar": {
+          "hex": "#4c78a8",
+          "name": "blue"
+        }
+      },
+      "columnRoles": {
+        "PRODUCT_NAME": "dimension",
+        "TOTAL_UNITS_ON_HAND": "measure"
+      }
+    }
+  }
+}
+
+---- FINAL ANSWER TEXT ----
+I'll get both the stock value by warehouse and units on hand by product.Both result sets have more than 3 rows with numeric measures, so I'll chart both.Here are both breakdowns from the current inventory snapshot (2026-09-14).
+
+**Total stock value by warehouse (USD)**
+
+DC-RENO holds the most stock value at $261,272.53, followed by DC-NEWARK, DC-DALLAS, and DC-CHICAGO â the latter three are clustered closely between ~$205.8K and ~$212.1K.
+
+
+
+
+
+**Units on hand by product (all 8 products)**
+
+Epsilon Gadget leads with 2,827 units, and Theta Widget is second at 2,554 units. The remaining six products range from 1,144 to 1,688 units, with Gamma Gadget holding the fewest.
+
+
+
+

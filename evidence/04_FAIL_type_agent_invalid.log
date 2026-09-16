@@ -1,0 +1,17 @@
+POST https://sfpscogs-rraman_aws_si.snowflakecomputing.com/api/v2/databases/SNOWFLAKE_INTELLIGENCE/schemas/AGENTS/agents/DEMO_MASTER_DELEGATE:run
+Q: Show me sales by product for the top 5 products.
+==============================================================================
+[raw stream written to trace_delegate.txt]
+
+---- EVENT TYPE COUNTS ----
+     1  error
+     1  done
+
+---- TOOL USE EVENTS ----
+  (none captured)
+
+---- CHART SPECS EMITTED ----
+  *** NONE — no chart was produced ***
+
+---- FINAL ANSWER TEXT ----
+(no text captured)

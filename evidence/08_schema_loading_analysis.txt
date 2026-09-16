@@ -1,0 +1,11 @@
+Semantic context payloads in MASTER trace:
+  Count: 2
+  payload[11]: 19,852 chars  (SALES_SV only)
+    preview: {"content": [{"json": {"pruned_note": "**Note**: This semantic model fits within the agent's token budget, so it is shown in full. You do not need to set pruning_question on future calls referencing t...
+  payload[82]: 52,070 chars  (SALES_SV only)
+    preview: {"content": [{"text": "I'll get the top 5 products by sales for you.", "type": "text"}, {"tool_use": {"client_side_execute": false, "input": {"pruning_question": "What are the top 5 products by total ...
+
+Total semantic context: 71,922 chars
+
+If only SALES_SV was loaded (single-view agent), it would be ~19,852 chars
+Overhead from flattening both views: 52,070 chars (72% of total semantic context)

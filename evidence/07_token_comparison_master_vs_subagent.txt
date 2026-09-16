@@ -1,0 +1,59 @@
+
+============================================================
+  MASTER AGENT (toolset flattened)
+  File: 01_top5_products.sse.txt (111,182 bytes)
+============================================================
+  SSE lines:              251
+  Parsed data payloads:   83
+  Total data chars:       110,501
+  Event types:
+      30  response.text.delta
+      23  response.status
+      10  response.tool_result.status
+       4  response.tool_use
+       4  response.tool_result
+       4  response.thinking.delta
+       3  response.text
+       1  response.thinking
+       1  response.table
+       1  response.chart
+       1  response.suggested_queries
+       1  response
+       1  done
+  Semantic context payloads: 2
+    payload 0: 19,852 chars
+    payload 1: 52,070 chars
+  Total semantic chars:   71,922
+  Tool result payloads:   0
+
+============================================================
+  SUBAGENT (direct, same question)
+  File: 05_subagent_direct.sse.txt (121,295 bytes)
+============================================================
+  SSE lines:              281
+  Parsed data payloads:   93
+  Total data chars:       120,657
+  Event types:
+      45  response.text.delta
+      23  response.status
+      10  response.tool_result.status
+       4  response.tool_use
+       4  response.tool_result
+       3  response.text
+       1  response.table
+       1  response.chart
+       1  response.suggested_queries
+       1  response
+       1  done
+  Semantic context payloads: 2
+    payload 0: 19,852 chars
+    payload 1: 56,799 chars
+  Total semantic chars:   76,651
+  Tool result payloads:   0
+
+============================================================
+  COMPARISON
+============================================================
+  Stream bytes: master=111,182  sub=121,295  ratio=0.92x
+  Data chars:   master=110,501  sub=120,657  ratio=0.92x
+  Semantic:     master=71,922  sub=76,651  ratio=0.94x
